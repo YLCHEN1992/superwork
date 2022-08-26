@@ -82,4 +82,15 @@ xistg$map=id$MAP[match(xistg$Namesp,id$SYMBOL)]
 tsixg$map=id$MAP[match(tsixg$Namesp,id$SYMBOL)]
 write.csv(xistg,paste(mark,"xistg.csv",sep="-"))
 write.csv(tsixg,paste(mark,"tsixg.csv",sep="-"))}
-cth("TCGA-LUAD.htseq_fpkm.tsv","TCGA-LUAD.GDC_phenotype.tsv","LUAD")
+cth("TCGA-ESCA.htseq_fpkm.tsv","TCGA-ESCA.GDC_phenotype.tsv","ESCA")
+cth("TCGA-HNSC.htseq_fpkm.tsv","TCGA-HNSC.GDC_phenotype.tsv","HNSC")
+cth("TCGA-KIRC.htseq_fpkm.tsv","TCGA-KIRC.GDC_phenotype.tsv","KIRC")
+cth("TCGA-KIRP.htseq_fpkm.tsv","TCGA-KIRP.GDC_phenotype.tsv","KIRP")
+cth("TCGA-LAML.htseq_fpkm.tsv","TCGA-LAML.GDC_phenotype.tsv","LAML")
+cth("TCGA-LIHC.htseq_fpkm.tsv","TCGA-LIHC.GDC_phenotype.tsv","LIHC")
+cth("TCGA-READ.htseq_fpkm.tsv","TCGA-READ.GDC_phenotype.tsv","READ")
+cth("TCGA-STAD.htseq_fpkm.tsv","TCGA-STAD.GDC_phenotype.tsv","STAD")
+cth("TCGA-THCA.htseq_fpkm.tsv","TCGA-THCA.GDC_phenotype.tsv","THCA")
+cth("TCGA-COAD.htseq_fpkm.tsv","TCGA-COAD.GDC_phenotype.tsv","COAD")
+cth("TCGA-GBM.htseq_fpkm.tsv","TCGA-GBM.GDC_phenotype.tsv","GBM")
+
