@@ -121,57 +121,153 @@ tdata$status[tdata$status=="Alive"]=1
 tdata$status[tdata$status=="Dead"]=2
 meg=na.omit(tdata);meg$status=as.numeric(meg$status)
 meg=meg[,!is.na(colnames(meg))]
-
+class(tdata$status)="numeric"
+data=tdata
 fit=surv_fit(Surv(time,status)~sex,data=data[data$time<365.5*3,])
 p3=ggsurvplot(fit, data =data[data$time<365.5*3,], conf.int=TRUE,surv.median.line="hv",
-pval=TRUE,risk.table = TRUE,submain = "sex Survival Curve for 3 years")
-png(paste("sex-3y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
-p3+theme_survminer(
+pval=TRUE,risk.table = TRUE,submain = "Sex Survival Curve for 3 years")+theme_survminer(
 font.main = c(16, "bold", "darkblue"),
 font.submain = c(15, "bold.italic", "darkblue"),
 font.caption = c(14, "plain", "orange"),
 font.x = c(14, "bold.italic", "red"),
 font.y = c(14, "bold.italic", "darkred"),
 font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("sex-3y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p3)
 dev.off()
 
 fit=surv_fit(Surv(time,status)~sex,data=data[data$time<365.5*5,])
 p5=ggsurvplot(fit, data = data[data$time<365.5*5,], conf.int=TRUE,surv.median.line="hv",
-pval=TRUE,risk.table = TRUE,submain = "sex Survival Curve for 5 years")
-png(paste("sex-5y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
-p5+theme_survminer(
+pval=TRUE,risk.table = TRUE,submain = "sex Survival Curve for 5 years")+theme_survminer(
 font.main = c(16, "bold", "darkblue"),
 font.submain = c(15, "bold.italic", "darkblue"),
 font.caption = c(14, "plain", "orange"),
 font.x = c(14, "bold.italic", "red"),
 font.y = c(14, "bold.italic", "darkred"),
 font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("sex-5y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p5)
 dev.off()
 
 fit=surv_fit(Surv(time,status)~sex,data=data[data$time<365.5*10,])
 p10=ggsurvplot(fit, data =data[data$time<365.5*10,], conf.int=TRUE,surv.median.line="hv",
-pval=TRUE,risk.table = TRUE,submain = "sex Survival Curve for 10 years")
-png(paste("sex-10y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
-p10+theme_survminer(
+pval=TRUE,risk.table = TRUE,submain = "Sex Survival Curve for 10 years")+theme_survminer(
 font.main = c(16, "bold", "darkblue"),
 font.submain = c(15, "bold.italic", "darkblue"),
 font.caption = c(14, "plain", "orange"),
 font.x = c(14, "bold.italic", "red"),
 font.y = c(14, "bold.italic", "darkred"),
 font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("sex-10y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p10)
 dev.off()
 
 fit=surv_fit(Surv(time,status)~sex,data=data)
 p=ggsurvplot(fit, data = data, conf.int=TRUE,surv.median.line="hv",
-pval=TRUE,risk.table = TRUE,submain = "sex Global Survival Curve")
-png(paste("sex-go-",type,".png",sep=""),units="in",width=8,height=8,res=600)
-p+theme_survminer(
+pval=TRUE,risk.table = TRUE,submain = "Sex Global Survival Curve")+theme_survminer(
 font.main = c(16, "bold", "darkblue"),
 font.submain = c(15, "bold.italic", "darkblue"),
 font.caption = c(14, "plain", "orange"),
 font.x = c(14, "bold.italic", "red"),
 font.y = c(14, "bold.italic", "darkred"),
 font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("sex-go-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p)
 dev.off()}
+
+csexsur=function(fpkmstr,phymstr,type){
+library("survival")
+library("survminer")
+library("ggplot2")
+fpkm=read.csv(fpkmstr,sep="\t")
+phy=read.csv(phymstr,sep="\t")
+id=read.csv("fuid.csv")
+d=phy$submitter_id.samples
+sex=phy$gender.demographic
+T=phy$pathologic_T
+N=phy$pathologic_N
+M=phy$pathologic_M
+time=phy$days_to_last_follow_up.diagnoses
+status=phy$vital_status.demographic
+phy=data.frame(id=d,sex=sex,time=time,status=status,T=T,N=N,M=M)
+fpkm$Ensembl_ID=substring(fpkm$Ensembl_ID,1,15)
+rownames(fpkm)=fpkm[,1];fpkm=fpkm[,-1]
+fpkm=t(fpkm)
+names=id$SYMBOL[match(colnames(fpkm),id$ENSEMBL)]
+colnames(fpkm)=names
+rownames(fpkm)=gsub("\\.","-",rownames(fpkm))
+tphy=phy[match(rownames(fpkm),phy$id),]
+tdata=cbind(tphy,fpkm)
+tdata$status[tdata$status=="Alive"]=1
+tdata$status[tdata$status=="Dead"]=2
+meg=na.omit(tdata);meg$status=as.numeric(meg$status)
+meg=meg[,!is.na(colnames(meg))]
+class(tdata$status)="numeric"
+data=tdata
+fit=surv_fit(Surv(time,status)~XIST,data=data[data$time<365.5*3,])
+p3=ggsurvplot(fit, data =data[data$time<365.5*3,], conf.int=TRUE,surv.median.line="hv",
+pval=TRUE,risk.table = TRUE,submain = "XIST Survival Curve for 3 years")+theme_survminer(
+font.main = c(16, "bold", "darkblue"),
+font.submain = c(15, "bold.italic", "darkblue"),
+font.caption = c(14, "plain", "orange"),
+font.x = c(14, "bold.italic", "red"),
+font.y = c(14, "bold.italic", "darkred"),
+font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("XIST-3y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p3)
+dev.off()
+
+fit=surv_fit(Surv(time,status)~XIST,data=data[data$time<365.5*5,])
+p5=ggsurvplot(fit, data = data[data$time<365.5*5,], conf.int=TRUE,surv.median.line="hv",
+pval=TRUE,risk.table = TRUE,submain = "XIST Survival Curve for 5 years")+theme_survminer(
+font.main = c(16, "bold", "darkblue"),
+font.submain = c(15, "bold.italic", "darkblue"),
+font.caption = c(14, "plain", "orange"),
+font.x = c(14, "bold.italic", "red"),
+font.y = c(14, "bold.italic", "darkred"),
+font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("XIST-5y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p5)
+dev.off()
+
+fit=surv_fit(Surv(time,status)~XIST,data=data[data$time<365.5*10,])
+p10=ggsurvplot(fit, data =data[data$time<365.5*10,], conf.int=TRUE,surv.median.line="hv",
+pval=TRUE,risk.table = TRUE,submain = "XIST Survival Curve for 10 years")+theme_survminer(
+font.main = c(16, "bold", "darkblue"),
+font.submain = c(15, "bold.italic", "darkblue"),
+font.caption = c(14, "plain", "orange"),
+font.x = c(14, "bold.italic", "red"),
+font.y = c(14, "bold.italic", "darkred"),
+font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("XIST-10y-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p10)
+dev.off()
+
+fit=surv_fit(Surv(time,status)~XIST,data=data)
+p=ggsurvplot(fit, data = data, conf.int=TRUE,surv.median.line="hv",
+pval=TRUE,risk.table = TRUE,submain = "XIST Global Survival Curve")+theme_survminer(
+font.main = c(16, "bold", "darkblue"),
+font.submain = c(15, "bold.italic", "darkblue"),
+font.caption = c(14, "plain", "orange"),
+font.x = c(14, "bold.italic", "red"),
+font.y = c(14, "bold.italic", "darkred"),
+font.tickslab = c(12, "plain", "darkgreen"))
+png(paste("XIST-go-",type,".png",sep=""),units="in",width=8,height=8,res=600)
+print(p)
+dev.off()
+
 csexsur("TCGA-LUSC.htseq_fpkm.tsv","TCGA-LUSC.GDC_phenotype.tsv","LUSC")
 csexsur("TCGA-LUAD.htseq_fpkm.tsv","TCGA-LUAD.GDC_phenotype.tsv","LUAD")
+csexsur("TCGA-ESCA.htseq_fpkm.tsv","TCGA-ESCA.GDC_phenotype.tsv","ESCA")
+csexsur("TCGA-HNSC.htseq_fpkm.tsv","TCGA-HNSC.GDC_phenotype.tsv","HNSC")
+csexsur("TCGA-KIRC.htseq_fpkm.tsv","TCGA-KIRC.GDC_phenotype.tsv","KIRC")
+csexsur("TCGA-KIRP.htseq_fpkm.tsv","TCGA-KIRP.GDC_phenotype.tsv","KIRP")
+csexsur("TCGA-LAML.htseq_fpkm.tsv","TCGA-LAML.GDC_phenotype.tsv","LAML")
+csexsur("TCGA-LIHC.htseq_fpkm.tsv","TCGA-LIHC.GDC_phenotype.tsv","LIHC")
+csexsur("TCGA-READ.htseq_fpkm.tsv","TCGA-READ.GDC_phenotype.tsv","READ")
+csexsur("TCGA-STAD.htseq_fpkm.tsv","TCGA-STAD.GDC_phenotype.tsv","STAD")
+csexsur("TCGA-THCA.htseq_fpkm.tsv","TCGA-THCA.GDC_phenotype.tsv","THCA")
+csexsur("TCGA-COAD.htseq_fpkm.tsv","TCGA-COAD.GDC_phenotype.tsv","COAD")
+csexsur("TCGA-GBM.htseq_fpkm.tsv","TCGA-GBM.GDC_phenotype.tsv","GBM")
+
+
