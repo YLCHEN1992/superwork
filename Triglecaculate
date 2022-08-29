@@ -173,5 +173,5 @@ font.x = c(14, "bold.italic", "red"),
 font.y = c(14, "bold.italic", "darkred"),
 font.tickslab = c(12, "plain", "darkgreen"))
 dev.off()}
-csexsur("TCGA-LUSC_htseq_fpkm.tsv","TCGA-LUSC.GDC_phenotype.tsv","LUSC")
-csexsur("TCGA-LUAD_htseq_fpkm.tsv","TCGA-LUAD.GDC_phenotype.tsv","LUAD")
+csexsur("TCGA-LUSC.htseq_fpkm.tsv","TCGA-LUSC.GDC_phenotype.tsv","LUSC")
+csexsur("TCGA-LUAD.htseq_fpkm.tsv","TCGA-LUAD.GDC_phenotype.tsv","LUAD")
