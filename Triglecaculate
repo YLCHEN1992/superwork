@@ -254,7 +254,7 @@ font.y = c(14, "bold.italic", "darkred"),
 font.tickslab = c(12, "plain", "darkgreen"))
 png(paste("XIST-go-",type,".png",sep=""),units="in",width=8,height=8,res=600)
 print(p)
-dev.off()
+dev.off()}
 
 csexsur("TCGA-LUSC.htseq_fpkm.tsv","TCGA-LUSC.GDC_phenotype.tsv","LUSC")
 csexsur("TCGA-LUAD.htseq_fpkm.tsv","TCGA-LUAD.GDC_phenotype.tsv","LUAD")
